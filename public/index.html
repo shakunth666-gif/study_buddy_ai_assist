@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Buddy AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Newsreader:ital,wght@0,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg" id="bgA"></div>
+  <div class="bg" id="bgB"></div>
+  <div class="shade"></div>
+
+  <div class="app">
+    <aside class="quotes" aria-label="Study quotes">
+      <h1>Study Buddy</h1>
+      <blockquote id="quoteMain" class="featured"></blockquote>
+      <div class="pins" id="pins"></div>
+    </aside>
+
+    <main class="panel">
+      <nav class="tabs" id="tabs">
+        <button data-view="dashboard" class="on">Dashboard</button>
+        <button data-view="topics">Topics</button>
+        <button data-view="log">Log study</button>
+        <button data-view="test">Take a test</button>
+        <button data-view="history">Results</button>
+      </nav>
+
+      <section id="view-dashboard" class="view on"></section>
+
+      <section id="view-topics" class="view">
+        <h2>Add a topic</h2>
+        <div class="form">
+          <label>Topic <input id="tName" placeholder="e.g. Mass spectrometry"></label>
+          <label>Subject <input id="tSubject" placeholder="e.g. Chemistry"></label>
+          <label class="wide">Your notes (the test is built from these) <textarea id="tNotes" rows="4" placeholder="Paste or type key points from your notes"></textarea></label>
+          <label>How confident are you? <select id="tConf"><option value="1">1 - lost</option><option value="2">2</option><option value="3" selected>3 - okay</option><option value="4">4</option><option value="5">5 - solid</option></select></label>
+          <button class="primary" id="addTopic">Add topic</button>
+        </div>
+        <h2>Your topics</h2>
+        <div id="topicList"></div>
+      </section>
+
+      <section id="view-log" class="view">
+        <h2>Log a study session</h2>
+        <div class="form">
+          <label>Topic <select id="lTopic"></select></label>
+          <label>Minutes studied <input id="lMin" type="number" min="1" value="30"></label>
+          <label class="wide">What did you actually learn? (in your own words) <textarea id="lLearned" rows="4" placeholder="Explain it like you're teaching a friend"></textarea></label>
+          <button class="primary" id="addSession">Save session</button>
+        </div>
+        <h2>Recent sessions</h2>
+        <div id="sessionList"></div>
+      </section>
+
+      <section id="view-test" class="view">
+        <h2>Test what you actually learned</h2>
+        <div class="form" id="testSetup">
+          <label>Topic <select id="qTopic"></select></label>
+          <label>Questions <select id="qCount"><option>5</option><option>10</option><option>15</option></select></label>
+          <button class="primary" id="startTest">Generate test</button>
+        </div>
+        <div id="quiz"></div>
+      </section>
+
+      <section id="view-history" class="view">
+        <h2>Past tests</h2>
+        <div id="historyList"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
