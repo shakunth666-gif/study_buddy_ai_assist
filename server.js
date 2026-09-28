@@ -1,4 +1,5 @@
 require('dotenv').config();
+const crypto = require('crypto');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -6,6 +7,31 @@ const { Topic, Session, Test } = require('./src/models');
 const { generateQuiz } = require('./src/gemini');
 
 const app = express();
+const appPassword = process.env.APP_PASSWORD;
+if (process.env.NODE_ENV === 'production' && !appPassword) {
+  console.error('APP_PASSWORD is required in production');
+  process.exit(1);
+}
+
+if (appPassword) {
+  app.use((req, res, next) => {
+    const match = (req.get('authorization') || '').match(/^Basic\s+(.+)$/i);
+    const credentials = match ? Buffer.from(match[1], 'base64').toString('utf8') : '';
+    const separator = credentials.indexOf(':');
+    const username = separator >= 0 ? credentials.slice(0, separator) : '';
+    const password = separator >= 0 ? credentials.slice(separator + 1) : '';
+    const passwordHash = crypto.createHash('sha256').update(password).digest();
+    const expectedHash = crypto.createHash('sha256').update(appPassword).digest();
+
+    if (username !== 'studybuddy' || !crypto.timingSafeEqual(passwordHash, expectedHash)) {
+      res.set('WWW-Authenticate', 'Basic realm="Study Buddy"');
+      return res.status(401).send('Authentication required.');
+    }
+
+    next();
+  });
+}
+
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 

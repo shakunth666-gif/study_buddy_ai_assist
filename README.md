@@ -10,12 +10,15 @@ Stack: Node.js, Express, MongoDB (Mongoose), vanilla JS frontend.
 2. Open `.env` and set:
    - `MONGODB_URI` - your MongoDB connection link
    - `GEMINI_API_KEY` - free key from https://aistudio.google.com/apikey
+   - `APP_PASSWORD` - shared password for the app (required in production)
 3. Run:
    ```
    npm install
    npm start
    ```
 4. Open http://localhost:3000
+
+The app uses HTTP Basic Auth with username `studybuddy` when `APP_PASSWORD` is set. In production, `APP_PASSWORD` is required. Everyone who has the shared password sees the same study data, so use a separate database for demos and do not store sensitive notes in a publicly shared deployment.
 
 ## How to use
 - Topics: add a topic and paste your notes.
